@@ -11,18 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         board:
-          - 36LJU22
-          - 38LJE24
-          # - 38LJE24-PICO2
-          - 38LJU24
-          # - 38LJU24-PICO2
-          - RP2040_ZERO
-          # - 11XGA24_1
-          # - 11XGA24_2
-          - LEO_V2
           - LEO_V3
-          - LEO_V3_2040BT
-          # - 09LJV23
 
     steps:
       - name: Checkout repository
@@ -31,7 +20,7 @@ jobs:
       - name: Extract SDK versions from CMakeLists.txt
         id: sdk_versions
         run: |
-          SDK_VERSION=$(grep -oP 'set\(sdkVersion \K[^\)]+' CMakeLists.txt)
+          SDK_VERSION=$(grep -oP 'set\(sdkVersion \K[^\)]+)' CMakeLists.txt)
           echo "sdk_version=$SDK_VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Pico SDK
@@ -112,7 +101,7 @@ jobs:
       - name: Delete previous firmware assets
         run: |
           gh release view latest --json assets --jq '.assets[].name' 2>/dev/null | \
-            grep '\.uf2$' | \
+            grep '\\.uf2$' | \
             while read -r asset; do
               echo "Deleting old asset: $asset"
               gh release delete-asset latest "$asset" --yes
@@ -133,12 +122,12 @@ jobs:
             **Date:** ${{ github.event.head_commit.timestamp }}
             **Message:** ${{ github.event.head_commit.message }}
             
-            ### Board Variants
-            Each `.uf2` file is named `ZX_RGBI_TO_VGA_HDMI-<board>-<version>.uf2`.
-            Download the file matching your board revision.
+            ### Board Variant
+            This project builds firmware only for **LEO_V3**.
+            The `.uf2` file is named `ZX_RGBI_TO_VGA_HDMI-LEO_V3-<version>.uf2`.
             
             ### Installation
-            1. Download the `.uf2` file for your board
+            1. Download the `.uf2` file for LEO V3
             2. Hold the BOOTSEL button on your Raspberry Pi Pico while connecting USB
             3. Drag and drop the `.uf2` file onto the RPI-RP2 drive
             
