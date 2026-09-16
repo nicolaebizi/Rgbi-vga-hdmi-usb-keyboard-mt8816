@@ -20,7 +20,7 @@ jobs:
       - name: Extract SDK versions from CMakeLists.txt
         id: sdk_versions
         run: |
-          SDK_VERSION=$(grep -oP 'set\(sdkVersion \K[^\)]+)' CMakeLists.txt)
+          SDK_VERSION=$(grep -oP 'set\(sdkVersion \K[0-9.]+' CMakeLists.txt)
           echo "sdk_version=$SDK_VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Pico SDK
