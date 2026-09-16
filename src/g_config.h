@@ -45,6 +45,8 @@
 #define I2C_PIN_SCL 19
 #define I2C_INST i2c1
 
+
+
 #endif
 
 #define DVI_PIN_D0 8
@@ -110,8 +112,6 @@
 #elif defined(BOARD_LEO_V3) || defined(BOARD_LEO_V3_2040BT)
 
 #define VIDEO_OUTPUT_AUTO_DETECT
-#define SPI_KB_ENABLE
-#define HW_CONFIG_ENABLE
 
 #ifdef BOARD_LEO_V3
 
@@ -121,6 +121,18 @@
 #define I2C_PIN_SCL 19
 #define I2C_INST i2c1
 
+#define MT8816_AX0 7
+#define MT8816_AX1 28
+#define MT8816_AX2 17
+#define MT8816_AX3 20
+#define MT8816_AY0 21
+#define MT8816_AY1 22
+#define MT8816_AY2 23
+#define MT8816_DATA 24
+#define MT8816_STROBE 25
+#define MT8816_CS 26
+#define MT8816_RESET 27
+
 #else
 
 #define HW_VERSION "LEO v3.0.2040BT"
@@ -128,8 +140,6 @@
 #define I2C_PIN_SCL 17
 #define I2C_INST i2c0
 // Not used in this board variant, but defined and pulled up to avoid Gotek menu navigation issues
-#define HW_GOTEK_BTN_L 18
-#define HW_GOTEK_BTN_R 19
 
 #endif
 
@@ -141,9 +151,6 @@
 // Buttons are not connected to GPIOs on LEO v3.0, so use the same GPIOs as the ROM bank pins for OSD buttons
 // Inputs are internally overriden and are read as HIGH to avoid OSD menu navigation issues
 #define NO_OSD_BUTTONS
-#define OSD_BTN_UP 20
-#define OSD_BTN_DOWN 21
-#define OSD_BTN_SEL 22
 
 #define PS2_PIN_DATA 29
 #define PS2_PIN_CLK 28
@@ -151,12 +158,6 @@
 #define KBD_PIN_CLK 26
 #define KBD_PIN_STB 27
 
-#define HW_PIN_ROM_BANK_D0 20
-#define HW_PIN_ROM_BANK_D1 21
-#define HW_PIN_ROM_BANK_D2 22
-#define HW_PIN_GOTEK_DRIVE_D0 23
-#define HW_PIN_GOTEK_DRIVE_D1 24
-#define HW_PIN_RAM_SIZE 25
 
 #elif defined(BOARD_09LJV23)
 
@@ -272,25 +273,7 @@ typedef struct ff_osd_config_t
 
 #endif
 
-#ifdef HW_CONFIG_ENABLE
-typedef struct hw_config_t
-{
-  uint8_t rom_bank;    // 1-8
-  bool ram_size;       // false = 128KB, true = 1024KB
-  uint8_t gotek_drive; // 0 = OFF, 1 = A, 2 = B
-} hw_config_t;
 
-#define HW_ROM_BANK_MIN 1
-#define HW_GOTEK_DRIVE_MIN 0
-
-#define HW_ROM_BANK_MAX 8
-#define HW_GOTEK_DRIVE_MAX 2
-
-#define HW_ROM_BANK_DEF 1
-#define HW_RAM_SIZE_DEF true
-#define HW_GOTEK_DRIVE_DEF 1
-
-#endif
 
 typedef struct settings_t
 {
@@ -308,9 +291,6 @@ typedef struct settings_t
   uint8_t pin_inversion_mask;
 #ifdef OSD_FF_ENABLE
   ff_osd_config_t ff_osd_config;
-#endif
-#ifdef HW_CONFIG_ENABLE
-  hw_config_t hw_config;
 #endif
   uint32_t crc;
 } settings_t;

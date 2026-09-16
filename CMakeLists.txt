@@ -49,11 +49,6 @@ if(BOARD STREQUAL "BOARD_RP2040_ZERO" OR BOARD STREQUAL "BOARD_LEO_V2" OR BOARD 
     set(USE_PICO2 OFF)
 endif()
 
-# Enable hardware configuration code for LEO v3 boards
-if(BOARD STREQUAL "BOARD_LEO_V3" OR BOARD STREQUAL "BOARD_LEO_V3_2040BT")
-    set(HW_CONFIG_ENABLE ON)
-endif()
-
 # Select Pico board type based on board variant (FORCE overrides cached value)
 if(USE_PICO2)
     set(PICO_BOARD pico2)
@@ -99,7 +94,7 @@ if(BOARD STREQUAL "BOARD_36LJU22" OR BOARD STREQUAL "BOARD_RP2040_ZERO" OR BOARD
 elseif(BOARD STREQUAL "BOARD_38LJE24" OR BOARD STREQUAL "BOARD_LEO_V3" OR BOARD STREQUAL "BOARD_LEO_V3_2040BT")
     set(OSD_MENU_ENABLE ON)
     set(OSD_FF_ENABLE ON)
-    set(PS2_KBD_ENABLE ON)
+    set(PS2_KBD_ENABLE OFF)
     set(USB_KBD_ENABLE ON)
     set(SERIAL_MENU_ENABLE OFF)
 elseif(BOARD STREQUAL "BOARD_38LJU24")
@@ -189,8 +184,7 @@ if(PS2_KBD_ENABLE OR USB_KBD_ENABLE)
         ${CMAKE_CURRENT_LIST_DIR}/src/kbd/kbd.c
         ${CMAKE_CURRENT_LIST_DIR}/src/kbd/osd_kbd.c
         ${CMAKE_CURRENT_LIST_DIR}/src/kbd/zx_kbd.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/kbd/ch446q.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/kbd/epm3256.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/kbd/mt8816.c
     )
 endif()
 
@@ -203,12 +197,6 @@ endif()
 if(USB_KBD_ENABLE)
     target_sources(${EXECUTABLE_NAME} PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/src/kbd/usb_kbd.c
-    )
-endif()
-
-if(HW_CONFIG_ENABLE)
-    target_sources(${EXECUTABLE_NAME} PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}/src/hw_config.c
     )
 endif()
 

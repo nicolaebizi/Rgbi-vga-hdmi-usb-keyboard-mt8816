@@ -443,10 +443,8 @@ void osd_buttons_init()
     gpio_set_dir(OSD_BTN_SEL, GPIO_IN);
     gpio_pull_up(OSD_BTN_SEL);
 #else
-    // Set GPIO override for OSD buttons to HIGH (inactive state)
-    gpio_set_inover(OSD_BTN_UP, GPIO_OVERRIDE_HIGH);
-    gpio_set_inover(OSD_BTN_DOWN, GPIO_OVERRIDE_HIGH);
-    gpio_set_inover(OSD_BTN_SEL, GPIO_OVERRIDE_HIGH);
+    // No physical OSD buttons on this board.
+    // Keep all button inputs inactive.
 #endif
 
     // Initialize timing
@@ -471,11 +469,16 @@ void osd_buttons_update()
     uint64_t current_time = time_us_64();
 
     // Handle button input
+#ifdef NO_OSD_BUTTONS
+    // No physical OSD buttons on this board.
+    bool button_states[3] = {false, false, false};
+#else
     // Read button states (buttons are active LOW with pull-up)
     bool button_states[3] = {
         !gpio_get(OSD_BTN_UP),
         !gpio_get(OSD_BTN_DOWN),
         !gpio_get(OSD_BTN_SEL)};
+#endif
 
     bool *button_pressed[3] = {
         &osd_buttons.up_pressed,

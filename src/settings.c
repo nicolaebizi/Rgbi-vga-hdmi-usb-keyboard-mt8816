@@ -49,13 +49,6 @@ settings_t default_settings = {
     },
 #endif
 
-#if defined(BOARD_LEO_V3) || defined(BOARD_LEO_V3_2040BT)
-    .hw_config = {
-        .rom_bank = HW_ROM_BANK_DEF,
-        .ram_size = HW_RAM_SIZE_DEF,
-        .gotek_drive = HW_GOTEK_DRIVE_DEF,
-    },
-#endif
 
     .crc = 0,
 };
@@ -123,14 +116,6 @@ void check_settings(settings_t *settings)
     settings->ff_osd_config.h_position = 5;
 #endif
 
-#if defined(BOARD_LEO_V3) || defined(BOARD_LEO_V3_2040BT)
-  if (settings->hw_config.rom_bank < HW_ROM_BANK_MIN ||
-      settings->hw_config.rom_bank > HW_ROM_BANK_MAX)
-    settings->hw_config.rom_bank = HW_ROM_BANK_DEF;
-
-  if (settings->hw_config.gotek_drive > HW_GOTEK_DRIVE_MAX)
-    settings->hw_config.gotek_drive = HW_GOTEK_DRIVE_DEF;
-#endif
 
   settings->crc = calculate_settings_crc(settings);
 }

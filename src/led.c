@@ -65,14 +65,6 @@ void led_put(uint8_t color, uint8_t brightness)
     pio_sm_put_blocking(PIO_WS2812, SM_WS2812, rgb << 8);
 }
 
-#elif defined(HW_CONFIG_ENABLE) // No free GPIO pins for LED
-void led_init()
-{
-}
-
-void led_put(uint8_t color, uint8_t brightness)
-{
-}
 
 #else // If WS2812 is not enabled and HW_CONFIG is not enabled, use PWM for LED
 #include "hardware/pwm.h"
